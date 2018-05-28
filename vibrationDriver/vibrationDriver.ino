@@ -43,12 +43,11 @@ void writeLetter(int target)
     pin = pin_port[letters[target][i]];
     digitalWrite(pin, HIGH);
     delay(DELAY);
-
-  Serial.print("DEBUG, pin: ");
-  Serial.println(pin);
+    
     if(i > 0) {
       pin = pin_port[letters[target][i-1]];
       digitalWrite(pin, LOW);
+      delay(DELAY);
     }
   }
 
