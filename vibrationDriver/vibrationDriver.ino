@@ -21,6 +21,8 @@ int target = 0;
 int minPWM = 110;
 int maxPWM = 255;
 
+int pattern[50] = {-1};
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
@@ -35,18 +37,22 @@ bool inRange(int id, int target) {
 }
 
 
-void writeLetter(int target)
+void writeLetter(int sequence[])
 {
   int pin = -1;
   
-  for(int i = 0; i < letterLengths[target]; i++) {
-    pin = pin_port[letters[target][i]];
-    digitalWrite(pin, HIGH);
+  for(int i = 0; i < 50; i++) {
+    if(sequence[i] != -1){
+      pin = pin_port[sequence[i]];
+      digitalWrite(pin, HIGH);
+    }
     delay(DELAY);
     
     if(i > 0) {
-      pin = pin_port[letters[target][i-1]];
-      digitalWrite(pin, LOW);
+      if(sequence[i-1] != -1){
+        pin = pin_port[sequence[i-1]];
+        digitalWrite(pin, LOW);
+      }
       delay(DELAY);
     }
   }
@@ -113,6 +119,7 @@ void writeLetter(int target)
   }
   */
 }
+
 void loop() {
   //turn off everything
   for (int k = 0; k<16; k++) {
@@ -123,11 +130,42 @@ void loop() {
     pin_power[k] = 0;
   }
 
-  delay(2000);
+  delay(1000);
+  Serial.println("Before Loop");
+     
+  int counter = 0;
+    // send data only when you receive data:
+    while (Serial.available() > 0) {
+      
+
+      
+      Serial.println("in da loop");
+      if(counter < 50){
+        // read the incoming byte:
+        pattern[counter] = Serial.read();
+
+        // say what you got:
+        Serial.print("I received: ");
+        Serial.println(pattern[counter], DEC);
+        counter ++;
+      }
+        else {
+          while (Serial.available() > 0)
+            Serial.read();
+        }
+    }
+  Serial.println("After Loop");
 
 
-  //target = rand() % totalLetters;
-  target = 1;
-  writeLetter(target);
-
+   if(pattern[0] != -1){
+        for (int i = 0; i < 50; i ++){
+          Serial.print(pattern[i]);
+          Serial.print(", ");
+        }
+      writeLetter(pattern);
+   }
+  
+  for (int i = 0; i < 50; i ++){
+    pattern[i]  = -1;
+  }
 }
