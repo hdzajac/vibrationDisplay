@@ -1,4 +1,4 @@
-int DELAY = 200;
+int DELAY = 400;
 int letters[][50] =
 {
   {1,4,7,10,13,-1,-1,1,2,6,9,12,15,-1,-1,7,8,9,-1,-1,-1},
@@ -11,7 +11,7 @@ int lengths[][50] = {
   {200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200}
 };
 
-int pin_port[16] = {0, 22, 24, 26};
+int pin_port[16] = {0, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48};
 
 int pwm_pin[64] = { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1 }; //rest 0
 int pin_power[64] = {0}; //all 0
@@ -121,6 +121,14 @@ void writeLetter(int sequence[])
 }
 
 void loop() {
+  for(int i = 1; i < sizeof(pin_port); i++) {
+    digitalWrite(pin_port[i], HIGH);
+    delay(800);
+    digitalWrite(pin_port[i], LOW);
+    
+  }
+  return;
+  
   //turn off everything
   for (int k = 0; k<16; k++) {
     if (pwm_pin[pin_port[k]] == 0) digitalWrite(pin_port[k], LOW);

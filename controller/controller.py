@@ -1,5 +1,6 @@
 import serial # pySerial
-import tkinter # GUI library
+import struct # packing bytes to string
+
 
 LETTERS = {
 'A':
@@ -66,7 +67,7 @@ try:
     connected = True
 except serial.serialutil.SerialException as e:
     print "Could not connect to arduino: " + PORT
-
+    print e
 
 while True:
     letter = raw_input("Enter a letter: ")
@@ -74,6 +75,9 @@ while True:
         arr = LETTERS[letter[0].upper()]
         print("arr:" + str(arr))
         if connected:
-            s.write(LETTERS[letter[0].upper()])
+            # Write out bytes
+            for b in arr:
+                print b
+                s.write(struct.pack('>b', b))
     else:
         print "does not exist"
