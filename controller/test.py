@@ -103,4 +103,16 @@ with open(TEST_DIRECTORY + '{0}.json'.format(test_type, 'r')) as fp:
     test = json.load(fp)
 
 # Execute test
-# TODO
+input("Press enter key to start")
+
+# for i in range(0, test['num_letters']):
+
+#
+def write_letter(s, letter):
+    arr = LETTERS[letter[0].upper()]
+    # print("arr:" + str(arr))
+
+    # Write out bytes
+    for b in arr:
+        s.write(struct.pack('>b', b))
+
