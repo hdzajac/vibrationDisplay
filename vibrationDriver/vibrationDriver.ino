@@ -11,7 +11,10 @@ int lengths[][50] = {
   {200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200}
 };
 
-int pin_port[16] = {0, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48};
+//                    1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16
+//int pin_port[] = {0, 24, 26, 28, 30, 32, 34, 36, 38, 40, 50, 52, 44, 48, 42, 46}; // Bottom
+int pin_port[] = {0, 28, 26, 24, 34, 32, 30, 40, 38, 36, 44, 52, 50, 46, 42, 48}; // Top
+
 
 int pwm_pin[64] = { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1 }; //rest 0
 int pin_power[64] = {0}; //all 0
@@ -40,14 +43,14 @@ bool inRange(int id, int target) {
 void writeLetter(int sequence[])
 {
   int pin = -1;
-  
+
   for(int i = 0; i < 50; i++) {
     if(sequence[i] != -1){
       pin = pin_port[sequence[i]];
       digitalWrite(pin, HIGH);
     }
     delay(DELAY);
-    
+
     if(i > 0) {
       if(sequence[i-1] != -1){
         pin = pin_port[sequence[i-1]];
@@ -94,7 +97,7 @@ void writeLetter(int sequence[])
           }
         }
       }
-      
+
       Serial.print("Index: ");
       Serial.print(curr);
       Serial.print(", ");
@@ -125,10 +128,10 @@ void loop() {
     digitalWrite(pin_port[i], HIGH);
     delay(800);
     digitalWrite(pin_port[i], LOW);
-    
+
   }
   return;
-  
+
   //turn off everything
   for (int k = 0; k<16; k++) {
     if (pwm_pin[pin_port[k]] == 0) digitalWrite(pin_port[k], LOW);
@@ -140,13 +143,13 @@ void loop() {
 
   delay(1000);
   Serial.println("Before Loop");
-     
+
   int counter = 0;
     // send data only when you receive data:
     while (Serial.available() > 0) {
-      
 
-      
+
+
       Serial.println("in da loop");
       if(counter < 50){
         // read the incoming byte:
@@ -170,9 +173,10 @@ void loop() {
           Serial.print(pattern[i]);
           Serial.print(", ");
         }
-      writeLetter(pattern);
+	DELAY = pattern[0];
+      writeLetter(pattern+1);
    }
-  
+
   for (int i = 0; i < 50; i ++){
     pattern[i]  = -1;
   }
