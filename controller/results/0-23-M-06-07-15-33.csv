@@ -1,0 +1,16 @@
+letter,guessed_letter,repetitions_requested
+X,X,2
+E,E,1
+U,U,1
+J,J,1
+F,F,1
+M,M,1
+W,W,1
+P,P,1
+P,D,2
+X,V,1
+V,V,1
+W,W,1
+D,D,1
+R,R,1
+M,M,2

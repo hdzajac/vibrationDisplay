@@ -124,6 +124,7 @@ void writeLetter(int sequence[])
 }
 
 void loop() {
+  /*
   for(int i = 1; i < sizeof(pin_port); i++) {
     digitalWrite(pin_port[i], HIGH);
     delay(800);
@@ -131,7 +132,8 @@ void loop() {
 
   }
   return;
-
+  */
+  
   //turn off everything
   for (int k = 0; k<16; k++) {
     if (pwm_pin[pin_port[k]] == 0) digitalWrite(pin_port[k], LOW);
@@ -142,7 +144,7 @@ void loop() {
   }
 
   delay(1000);
-  Serial.println("Before Loop");
+  //Serial.println("Before Loop");
 
   int counter = 0;
     // send data only when you receive data:
@@ -150,14 +152,14 @@ void loop() {
 
 
 
-      Serial.println("in da loop");
+      //Serial.println("in da loop");
       if(counter < 50){
         // read the incoming byte:
         pattern[counter] = Serial.read();
 
         // say what you got:
-        Serial.print("I received: ");
-        Serial.println(pattern[counter], DEC);
+        //Serial.print("I received: ");
+        //Serial.println(pattern[counter], DEC);
         counter ++;
       }
         else {
@@ -165,13 +167,13 @@ void loop() {
             Serial.read();
         }
     }
-  Serial.println("After Loop");
+  //Serial.println("After Loop");
 
 
    if(pattern[0] != -1){
         for (int i = 0; i < 50; i ++){
-          Serial.print(pattern[i]);
-          Serial.print(", ");
+          //Serial.print(pattern[i]);
+          //Serial.print(", ");
         }
 	DELAY = pattern[0];
       writeLetter(pattern+1);

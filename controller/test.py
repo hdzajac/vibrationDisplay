@@ -5,10 +5,12 @@ import os   # OS related file reading
 import datetime # For the filename
 from time import sleep # To not take input while waiting for the vibration to finish
 from random import randint # For random test sequences
+from random import seed
 
 # Constants
 TEST_DIRECTORY = "./tests/"
 RESULT_DIRECTORY = "./results/"
+PORT = "COM5" # might be "COM3" on Windows
 
 LETTERS = {
 'A':
@@ -54,7 +56,7 @@ LETTERS = {
 'U':
 [1,4,7,10,13,14,15,12,9,6,3,-1,-1,-1],
 'V':
-[1,4,7,11,14,-1,-1,3,6,9,11,14,-1,-1,-1],
+[1,4,7,11,14,-1,-1,14,11,9,6,3,-1,-1,-1],
 'W':
 [1,4,7,10,13,-1,-1,13,11,8,-1,-1,8,11,15,-1,-1,15,12,9,6,3,-1,-1,-1],
 'X':
@@ -64,8 +66,6 @@ LETTERS = {
 'Z':
 [1,2,3,-1,-1,3,6,8,10,13,-1,-1,13,14,15,-1,-1,-1]
 }
-
-PORT = "/dev/ttyACM0" # might be "COM3" on Windows
 
 # Helper functions
 def read_number(text):
@@ -108,7 +108,7 @@ def write_letter(s, delay, letter):
         for b in arr:
             s.write(struct.pack('>b', b))
 
-        sleep(length(arr) * delay * 2)
+        sleep(len(arr) * delay * 2 / 1000)
     else:
         print("--Arduino not connected, writing normal string to file")
         arduino.write(str(delay))
@@ -161,13 +161,16 @@ with open(TEST_DIRECTORY + '{0}.json'.format(test_type, 'r')) as fp:
 test_time = datetime.datetime.now().strftime("%m-%d-%H-%M")
 guesses = []
 
-input("Press enter key to start")
+seed(datetime.datetime.now())
 
 while (hasLetter(test)):
+
     target = getLetter(test)
     vibrations = 0
 
     entered = '?'
+
+    input("Press enter key to feel the vibration :^)")
 
     while not entered.isalpha():
         vibrations += 1
